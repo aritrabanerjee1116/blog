@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Blog App</title>
+</head>
+<body>
+  <%- include('./navbar') %>
+
+  <% if (success && success.length > 0) { %>
+    <div style="background:#d4edda; color:#155724; padding:10px 16px; margin:10px 0; border:1px solid #c3e6cb; border-radius:4px;">
+      <strong>✅ <%= success[0] %></strong>
+    </div>
+  <% } %>
+
+  <% if (error && error.length > 0) { %>
+    <div style="background:#f8d7da; color:#721c24; padding:10px 16px; margin:10px 0; border:1px solid #f5c6cb; border-radius:4px;">
+      <strong>❌ <%= error[0] %></strong>
+    </div>
+  <% } %>

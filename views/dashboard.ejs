@@ -1,0 +1,66 @@
+<%- include('./partials/header') %>
+
+<div style="max-width:900px; margin:30px auto; padding:0 16px;">
+  <h2>👋 Welcome, <%= user.name %>!</h2>
+  <p>Role: <strong><%= user.role %></strong> &nbsp;|&nbsp; Email: <%= user.email %></p>
+
+  <% if (user.profileImage) { %>
+    <img src="/uploads/<%= user.profileImage %>" alt="Profile"
+      style="width:80px; height:80px; border-radius:50%; object-fit:cover; margin-bottom:10px;"/>
+  <% } %>
+
+  <hr/>
+
+  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+    <h3>📰 My Blogs (<%= myBlogs.length %>)</h3>
+    <a href="/blogs/create" style="background:#333; color:#fff; padding:8px 16px; text-decoration:none; border-radius:4px;">+ Create Blog</a>
+  </div>
+
+  <% if (myBlogs.length === 0) { %>
+    <p style="color:#777;">You haven't created any blogs yet. <a href="/blogs/create">Create one now!</a></p>
+  <% } else { %>
+    <table style="width:100%; border-collapse:collapse;">
+      <thead>
+        <tr style="background:#f4f4f4; text-align:left;">
+          <th style="padding:10px; border:1px solid #ddd;">#</th>
+          <th style="padding:10px; border:1px solid #ddd;">Title</th>
+          <th style="padding:10px; border:1px solid #ddd;">Image</th>
+          <th style="padding:10px; border:1px solid #ddd;">Created</th>
+          <th style="padding:10px; border:1px solid #ddd;">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% myBlogs.forEach(function(blog, i) { %>
+          <tr>
+            <td style="padding:10px; border:1px solid #ddd;"><%= i + 1 %></td>
+            <td style="padding:10px; border:1px solid #ddd;">
+              <a href="/blogs/<%= blog._id %>"><%= blog.title %></a>
+            </td>
+            <td style="padding:10px; border:1px solid #ddd;">
+              <% if (blog.image) { %>
+                <img src="/uploads/<%= blog.image %>" alt="blog" style="width:60px; height:40px; object-fit:cover;"/>
+              <% } else { %>
+                <span style="color:#aaa;">No image</span>
+              <% } %>
+            </td>
+            <td style="padding:10px; border:1px solid #ddd;"><%= blog.createdAt.toDateString() %></td>
+            <td style="padding:10px; border:1px solid #ddd;">
+              <a href="/blogs/edit/<%= blog._id %>" style="color:#007bff; margin-right:8px;">✏️ Edit</a>
+              <form action="/blogs/delete/<%= blog._id %>" method="POST" style="display:inline;"
+                onsubmit="return confirm('Delete this blog?')">
+                <button type="submit" style="background:none; border:none; color:#dc3545; cursor:pointer;">🗑️ Delete</button>
+              </form>
+            </td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  <% } %>
+
+  <% if (user.role === 'admin') { %>
+    <hr/>
+    <p>🛡️ Admin: <a href="/users">Manage All Users</a> &nbsp;|&nbsp; <a href="/blogs">All Blogs</a></p>
+  <% } %>
+</div>
+
+<%- include('./partials/footer') %>

@@ -1,0 +1,41 @@
+<%- include('../partials/header') %>
+
+<div style="max-width:1000px; margin:30px auto; padding:0 16px;">
+  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+    <h2>📰 All Blogs</h2>
+    <% if (user) { %>
+      <a href="/blogs/create" style="background:#333; color:#fff; padding:8px 16px; text-decoration:none; border-radius:4px;">+ New Blog</a>
+    <% } %>
+  </div>
+
+  <% if (blogs.length === 0) { %>
+    <p style="color:#777; text-align:center; margin-top:40px;">No blogs published yet. Be the first to <a href="/register">register</a> and create one!</p>
+  <% } else { %>
+    <div style="display:grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap:20px;">
+      <% blogs.forEach(function(blog) { %>
+        <div style="border:1px solid #ddd; border-radius:8px; overflow:hidden;">
+          <% if (blog.image) { %>
+            <img src="/uploads/<%= blog.image %>" alt="<%= blog.title %>"
+              style="width:100%; height:180px; object-fit:cover;"/>
+          <% } else { %>
+            <div style="width:100%; height:180px; background:#eee; display:flex; align-items:center; justify-content:center; color:#aaa; font-size:2rem;">📝</div>
+          <% } %>
+          <div style="padding:14px;">
+            <h3 style="margin:0 0 8px 0; font-size:1.1rem;">
+              <a href="/blogs/<%= blog._id %>" style="text-decoration:none; color:#333;"><%= blog.title %></a>
+            </h3>
+            <p style="color:#777; font-size:0.85rem; margin:0 0 8px 0;">
+              By <strong><%= blog.author ? blog.author.name : 'Unknown' %></strong> &middot; <%= blog.createdAt.toDateString() %>
+            </p>
+            <p style="color:#555; font-size:0.9rem; margin:0 0 12px 0;">
+              <%= blog.content.substring(0, 100) %><%= blog.content.length > 100 ? '...' : '' %>
+            </p>
+            <a href="/blogs/<%= blog._id %>" style="color:#007bff; font-size:0.9rem;">Read more →</a>
+          </div>
+        </div>
+      <% }) %>
+    </div>
+  <% } %>
+</div>
+
+<%- include('../partials/footer') %>

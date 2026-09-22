@@ -1,0 +1,61 @@
+<%- include('../partials/header') %>
+
+<div style="max-width:1000px; margin:30px auto; padding:0 16px;">
+  <h2>👥 User Management</h2>
+  <p style="color:#777;">Total Users: <strong><%= users.length %></strong></p>
+
+  <% if (users.length === 0) { %>
+    <p>No users found.</p>
+  <% } else { %>
+    <table style="width:100%; border-collapse:collapse;">
+      <thead>
+        <tr style="background:#f4f4f4; text-align:left;">
+          <th style="padding:10px; border:1px solid #ddd;">#</th>
+          <th style="padding:10px; border:1px solid #ddd;">Profile</th>
+          <th style="padding:10px; border:1px solid #ddd;">Name</th>
+          <th style="padding:10px; border:1px solid #ddd;">Email</th>
+          <th style="padding:10px; border:1px solid #ddd;">Role</th>
+          <th style="padding:10px; border:1px solid #ddd;">Joined</th>
+          <th style="padding:10px; border:1px solid #ddd;">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% users.forEach(function(u, i) { %>
+          <tr style="<%= u._id.toString() === user._id.toString() ? 'background:#fffde7;' : '' %>">
+            <td style="padding:10px; border:1px solid #ddd;"><%= i + 1 %></td>
+            <td style="padding:10px; border:1px solid #ddd;">
+              <% if (u.profileImage) { %>
+                <img src="/uploads/<%= u.profileImage %>" alt="profile"
+                  style="width:40px; height:40px; border-radius:50%; object-fit:cover;"/>
+              <% } else { %>
+                <span>👤</span>
+              <% } %>
+            </td>
+            <td style="padding:10px; border:1px solid #ddd;"><%= u.name %></td>
+            <td style="padding:10px; border:1px solid #ddd;"><%= u.email %></td>
+            <td style="padding:10px; border:1px solid #ddd;">
+              <span style="<%= u.role === 'admin' ? 'color:#856404; font-weight:bold;' : '' %>">
+                <%= u.role %>
+              </span>
+            </td>
+            <td style="padding:10px; border:1px solid #ddd;"><%= u.createdAt.toDateString() %></td>
+            <td style="padding:10px; border:1px solid #ddd;">
+              <% if (u._id.toString() !== user._id.toString()) { %>
+                <form action="/users/delete/<%= u._id %>" method="POST" style="display:inline;"
+                  onsubmit="return confirm('Delete user <%= u.name %> and all their data?')">
+                  <button type="submit" style="background:#dc3545; color:#fff; border:none; padding:6px 12px; border-radius:4px; cursor:pointer;">
+                    🗑️ Delete
+                  </button>
+                </form>
+              <% } else { %>
+                <span style="color:#aaa; font-size:0.85rem;">(you)</span>
+              <% } %>
+            </td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  <% } %>
+</div>
+
+<%- include('../partials/footer') %>
